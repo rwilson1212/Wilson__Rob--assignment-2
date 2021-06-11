@@ -129,6 +129,7 @@
       color: #999;
     }  
 
+
     .listedItem {
       display: block;
       position: relative;
@@ -150,39 +151,47 @@
       width: 0;
     }
 
+    /* check box effect */
     .checkMark {
       position: absolute;
-      top: .75rem;
+      border: black solid 2px;
+      border-radius: 4px;
+      top: .5rem;
       left: .5rem;
       height: 25px;
       width: 25px;
-      background-color: lightblue;
-    }
-
-    .listedItem:hover input ~ .checkMark {
       background-color: #ccc;
+    }
+
+    /* hover effect */
+    .listedItem:hover {
+      font-weight: bold;
       
     }
 
+    /* change background color on click */
     .listedItem input:checked ~ .checkMark {
-      background-color: gray;
-      
+      background-color: #2196F3;
       
     }
+
+    /* check mark invisible */
     .checkMark:after {
       content: "";
       position: absolute;
       display: none;
     }
     
+    /* check mark visible after click */
     .listedItem input:checked ~ .checkMark:after {
       display: block;
     }
 
-    
+
+    /* check mark styling */
     .listedItem .checkMark:after {
       left: .5rem;
-      top: .5rem;
+      top: .3rem;
       width: 5px;
       height: 10px;
       border: solid white;
@@ -194,7 +203,7 @@
     }
     
     .labelText{
-      padding-left: 1.5rem;
+      padding-left: 1.2rem;
     }
 
     .listedItem input:checked ~ .labelText{
@@ -245,21 +254,25 @@ $(document).ready(function(){
         //takes last array value
         const toDoArrayCopy = toDoArray.slice(-1)
 
-        const toDoLi = toDoArrayCopy.map(function(toDoItem){ // re runs whole array each time
+        // re runs whole array each time
+        const toDoLi = toDoArrayCopy.map(function(toDoItem){ 
               return `<li class="listedItem"><label><input type="checkbox"><span class="checkMark"></span><span class="labelText">${toDoItem}</span></label></li>`;
             }).join('');
         
+            //no action if form control blank
             let inputedValue = $('.form-control').val() 
 
             if(inputedValue !==""){
               $('ul.toDo').append(toDoLi);
                 }
-
-        event.preventDefault() // stops page refreshing so array can be maintained
+        // stops page refreshing so array can be maintained        
+        event.preventDefault() 
         
+        // clears form control on refresh        
         $("form")[0].reset();
-              
-        $(function () { // allows drag and sort for list
+        
+        // allows drag and sort for list      
+        $(function () {
             $('#sortableList').sortable(); 
 
           })     
