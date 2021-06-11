@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>jQuery To-Do Application</title>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+         rel = "stylesheet">
+       
+  
+  <style>
+    article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary{display:block;}audio,canvas,video{display:inline-block;}audio:not([controls]){display:none;height:0;}[hidden]{display:none;}html{font-family:sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}a:focus{outline:thin dotted;}a:active,a:hover{outline:0;}h1{font-size:2em;}abbr[title]{border-bottom:1px dotted;}b,strong{font-weight:700;}dfn{font-style:italic;}mark{background:#ff0;color:#000;}code,kbd,pre,samp{font-family:monospace, serif;font-size:1em;}pre{white-space:pre-wrap;word-wrap:break-word;}q{quotes:\201C \201D \2018 \2019;}small{font-size:80%;}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline;}sup{top:-.5em;}sub{bottom:-.25em;}img{border:0;}svg:not(:root){overflow:hidden;}fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em;}button,input,select,textarea{font-family:inherit;font-size:100%;margin:0;}button,input{line-height:normal;}button,html input[type=button],/* 1 */
+    input[type=reset],input[type=submit]{-webkit-appearance:button;cursor:pointer;}button[disabled],input[disabled]{cursor:default;}input[type=checkbox],input[type=radio]{box-sizing:border-box;padding:0;}input[type=search]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box;}input[type=search]::-webkit-search-cancel-button,input[type=search]::-webkit-search-decoration{-webkit-appearance:none;}textarea{overflow:auto;vertical-align:top;}table{border-collapse:collapse;border-spacing:0;}body,figure{margin:0;}legend,button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0;}
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    }
+
+    h1 {
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    button, input, select[multiple], textarea {
+      background-image: none;
+    }
+
+    input, button, select, textarea {
+      font-family: inherit;
+      font-size: inherit;
+      line-height: inherit;
+    }
+
+    button, input {
+      line-height: normal;
+    }
+
+    button, input, select, textarea {
+      margin: 0;
+      font-family: inherit;
+      font-size: 100%;
+    }
+
+    ul, ol {
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    ul li {
+      cursor: move;
+    }
+
+        
+   li:hover{
+      cursor: pointer;
+     }
+
+    a {
+      color: #428bca;
+      text-decoration: none;
+    }
+
+    main {
+      padding: 30px;
+      margin-bottom: 30px;
+      font-size: 21px;
+      font-weight: 200;
+      line-height: 2.1;
+      color: inherit;
+      background-color: #eee;
+    }
+
+    main h1 {
+      font-size: 63px;
+      line-height: 1;
+      color: inherit;
+    }
+
+    .container {
+      max-width: 750px;
+      padding: 0 15px;
+      margin: auto;
+    }
+
+    .page-header {
+      padding-bottom: 10px;
+      margin: 40px 0 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    input {
+      height: 45px;
+      padding: 10px 16px;
+      font-size: 18px;
+      line-height: 1.3;
+      border-radius: 6px;
+    }
+
+    .form-control {
+      display: block;
+      width: 100%;
+      height: 35px;
+      padding: 6px 12px;
+      font-size: 14px;
+      line-height: 1.4;
+      color: #555;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+      transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    }
+
+    .alert {
+      color: #b94a48;
+      background-color: #f2dede;
+      border: 1px solid #eed3d7;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+    }
+
+    .text-muted {
+      color: #999;
+    }  
+
+    .listedItem {
+      display: block;
+      position: relative;
+      padding-left: 35px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      font-size: 22px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    .listedItem input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+
+    .checkMark {
+      position: absolute;
+      top: .75rem;
+      left: .5rem;
+      height: 25px;
+      width: 25px;
+      background-color: lightblue;
+    }
+
+    .listedItem:hover input ~ .checkMark {
+      background-color: #ccc;
+      
+    }
+
+    .listedItem input:checked ~ .checkMark {
+      background-color: gray;
+      
+      
+    }
+    .checkMark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+    
+    .listedItem input:checked ~ .checkMark:after {
+      display: block;
+    }
+
+    
+    .listedItem .checkMark:after {
+      left: .5rem;
+      top: .5rem;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 3px 3px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+      
+    }
+    
+    .labelText{
+      padding-left: 1.5rem;
+    }
+
+    .listedItem input:checked ~ .labelText{
+      color: gray;
+      text-decoration: line-through; 
+    }
+
+  </style>
+</head>
+<body>
+
+<main>
+  <div class="container">
+    
+    <div class="page-header"> 
+      <h1>jQuery To-Do Application 😎</h1>
+    </div>
+
+    <form>
+      <input class="form-control" type="text" placeholder="Add an item...">
+    </form>
+
+    <ul id="sortableList" class="toDo">
+      <!-- To do items get added dynamically here -->
+    </ul>
+    
+  </div>
+</main>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>  <!-- added for sortable function -->
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>  <!-- added for sortable function -->
+<script>
+
+$(document).ready(function(){
+
+    // focus on page load
+    $('input:text').focus(); 
+
+    let toDoArray = [];
+    
+    // form submit
+    $("form").submit(function(event){
+      
+        //push the value in form control to array
+        toDoArray.push($(".form-control").val()); 
+
+        //takes last array value
+        const toDoArrayCopy = toDoArray.slice(-1)
+
+        const toDoLi = toDoArrayCopy.map(function(toDoItem){ // re runs whole array each time
+              return `<li class="listedItem"><label><input type="checkbox"><span class="checkMark"></span><span class="labelText">${toDoItem}</span></label></li>`;
+            }).join('');
+        
+            let inputedValue = $('.form-control').val() 
+
+            if(inputedValue !==""){
+              $('ul.toDo').append(toDoLi);
+                }
+
+        event.preventDefault() // stops page refreshing so array can be maintained
+        
+        $("form")[0].reset();
+              
+        $(function () { // allows drag and sort for list
+            $('#sortableList').sortable(); 
+
+          })     
+  
+});
+
+    
+  
+      
+
+})
+
+
+
+</script>
+</body>
+</html>
