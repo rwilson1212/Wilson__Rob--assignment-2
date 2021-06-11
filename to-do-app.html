@@ -246,15 +246,15 @@ $(document).ready(function(){
     let toDoArray = [];
     
     // form submit
-    $("form").submit(function(event){
+    $('form').submit(function(event){
       
         //push the value in form control to array
-        toDoArray.push($(".form-control").val()); 
+        toDoArray.push($('.form-control').val()); 
 
         //takes last array value
         const toDoArrayCopy = toDoArray.slice(-1)
 
-        // re runs whole array each time
+        // maps form control input formatted as list item
         const toDoLi = toDoArrayCopy.map(function(toDoItem){ 
               return `<li class="listedItem"><label><input type="checkbox"><span class="checkMark"></span><span class="labelText">${toDoItem}</span></label></li>`;
             }).join('');
@@ -265,11 +265,12 @@ $(document).ready(function(){
             if(inputedValue !==""){
               $('ul.toDo').append(toDoLi);
                 }
+
         // stops page refreshing so array can be maintained        
         event.preventDefault() 
         
         // clears form control on refresh        
-        $("form")[0].reset();
+        $('form')[0].reset();
         
         // allows drag and sort for list      
         $(function () {
